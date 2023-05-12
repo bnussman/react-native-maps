@@ -46,9 +46,15 @@ export const createNotSupportedComponent = (message: string) => () => {
   return null;
 };
 
-export const googleMapIsInstalled = !!UIManager.getViewManagerConfig(
-  getNativeMapName(PROVIDER_GOOGLE),
-);
+function getIsGoogleMapsInstalled() {
+  // Check to make sure getViewManagerConfig to exist. It does not exist in web.
+  if (UIManager.getViewManagerConfig) {
+    return !!UIManager.getViewManagerConfig(getNativeMapName(PROVIDER_GOOGLE));
+  }
+  return false;
+}
+
+export const googleMapIsInstalled = getIsGoogleMapsInstalled();
 
 export default function decorateMapComponent<Type extends Component>(
   Component: Type,
